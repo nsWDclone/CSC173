@@ -30,8 +30,6 @@ extern void put_SNAP(HASHTABLE h, char* hashstr, SNAP_RELATION data);
 extern void put_CPQ(HASHTABLE h, char* hashstr, CPQ_RELATION data);
 extern void put_CDH(HASHTABLE h, char* hashstr, CDH_RELATION data);
 extern void put_CR(HASHTABLE h, char* hashstr, CR_RELATION data);
-extern void put_ID(HASHTABLE h, char* hashstr, ID_RELATION data);
-extern void put_CRDH(HASHTABLE h, char* hashstr, CRDH_RELATION data);
 extern void put_INDEX(HASHTABLE h, char* hashstr, INDEX index);
 
 extern BUCKET get_bucket(HASHTABLE h, char* hashstr);

@@ -15,11 +15,11 @@ extern void insert_CPQ(DATABASE table, char* c, char* pq);
 extern void insert_CDH(DATABASE table, char* c, char* d, char* h);
 extern void insert_CR(DATABASE table, char* c, char* r);
 
-extern CSG_RELATION lookup_CSG(DATABASE table, char* c, char* s, char* g);
-extern SNAP_RELATION lookup_SNAP(DATABASE table, char* s, char* n, char* a, char* p);
-extern CPQ_RELATION lookup_CPQ(DATABASE table, char* c, char* pq);
-extern CDH_RELATION lookup_CDH(DATABASE table, char* c, char* d, char* h);
-extern CR_RELATION lookup_CR(DATABASE table, char* c, char* r);
+extern HASHTABLE lookup_CSG(DATABASE table, char* c, char* s, char* g);
+extern HASHTABLE lookup_SNAP(DATABASE table, char* s, char* n, char* a, char* p);
+extern HASHTABLE lookup_CPQ(DATABASE table, char* c, char* pq);
+extern HASHTABLE lookup_CDH(DATABASE table, char* c, char* d, char* h);
+extern HASHTABLE lookup_CR(DATABASE table, char* c, char* r);
 
 extern void delete_CSG(DATABASE table, char* c, char* s, char* g);
 extern void delete_SNAP(DATABASE table, char* s, char* n, char* a, char* p);

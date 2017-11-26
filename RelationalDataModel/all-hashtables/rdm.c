@@ -11,15 +11,7 @@ void insert_CSG(DATABASE table, char* c, char* s, char* g){
   char str[10];
   strcpy(str, c);
   strcat(str, s);
-  if(table->index->buckets[hash(str)]->contents!=NULL){
-    INDEX x = (INDEX) table->index->buckets[hash(str)]->contents;
-    CSG_RELATION r = x->index;
-    while(r!=NULL){
-      if(CSG_equals(r, relation)) return;
-      r = r->next;
-    }
-  }
-  put_CSG(table->storage, relation->key, relation);
+  put_CSG(table->storage, str, relation);
   put_INDEX(table->index, str, new_INDEX(relation));
 }
 
@@ -28,32 +20,16 @@ void insert_SNAP(DATABASE table, char* s, char* n, char* a, char* p){
   char str[15];
   strcpy(str, s);
   strcat(str, p);
-  if(table->index->buckets[hash(str)]->contents!=NULL){
-    INDEX x = (INDEX) table->index->buckets[hash(str)]->contents;
-    SNAP_RELATION r = x->index;
-    while(r!=NULL){
-      if(SNAP_equals(r, relation)) return;
-      r = r->next;
-    }
-  }
-  put_SNAP(table->storage, relation->key, relation);
+  put_SNAP(table->storage, str, relation);
   put_INDEX(table->index, str, new_INDEX(relation));
 }
 
 void insert_CPQ(DATABASE table, char* c, char* pq){
   CPQ_RELATION relation = new_CPQ(c,pq);
-  char str[10];
+  char str[50];
   strcpy(str, c);
   strcat(str, pq);
-  if(table->index->buckets[hash(str)]->contents!=NULL){
-    INDEX x = (INDEX) table->index->buckets[hash(str)]->contents;
-    CPQ_RELATION r = x->index;
-    while(r!=NULL){
-      if(CPQ_equals(r, relation)) return;
-      r = r->next;
-    }
-  }
-  put_CPQ(table->storage, relation->key, relation);
+  put_CPQ(table->storage, str, relation);
   put_INDEX(table->index, str, new_INDEX(relation));
 }
 
@@ -62,32 +38,15 @@ void insert_CDH(DATABASE table, char* c, char* d, char* h){
   char str[7];
   strcpy(str, c);
   strcat(str, d);
-  if(table->index->buckets[hash(str)]->contents!=NULL){
-    INDEX x = (INDEX) table->index->buckets[hash(str)]->contents;
-    CDH_RELATION r = x->index;
-    while(r!=NULL){
-      if(CDH_equals(r, relation)) return;
-      r = r->next;
-    }
-  }
-  put_CDH(table->storage, relation->key, relation);
-  put_INDEX(table->index, str, new_INDEX(relation));
+  put_CDH(table->storage, str, relation);
 }
 
 void insert_CR(DATABASE table, char* c, char* r){
   CR_RELATION relation = new_CR(c,r);
   char str[5];
   strcpy(str, c);
-  if(table->index->buckets[hash(str)]->contents!=NULL){
-    INDEX x = (INDEX) table->index->buckets[hash(str)]->contents;
-    CR_RELATION r = x->index;
-    while(r!=NULL){
-      if(CR_equals(r, relation)) return;
-      r = r->next;
-    }
-  }
   put_CR(table->storage, str, relation);
-  put_INDEX(table->index, relation->key, new_INDEX(relation));
+  put_INDEX(table->index, str, new_INDEX(relation));
 }
 
 CSG_RELATION lookup_CSG(DATABASE table, char* c, char* s, char* g){

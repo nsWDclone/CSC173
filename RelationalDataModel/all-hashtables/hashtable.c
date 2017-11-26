@@ -38,6 +38,7 @@ INDEX new_INDEX(void* i){
 }
 
 void put_CSG(HASHTABLE h, char* hashstr, CSG_RELATION data){
+  // if(lookup_CSG(h, data->course_name, data->student_grade, data->student_grade) != NULL) return;
   BUCKET b = h->buckets[hash(hashstr)];
   if(b->contents == NULL){
     b->contents = data;
@@ -112,46 +113,14 @@ void put_CR(HASHTABLE h, char* hashstr, CR_RELATION data){
   }
 }
 
-void put_ID(HASHTABLE h, char* hashstr, ID_RELATION data){
-  BUCKET b = h->buckets[hash(hashstr)];
-  if(b->contents == NULL){
-    b->contents = data;
-  } else {
-    ID_RELATION r = (ID_RELATION) b->contents;
-    while(r->next!=NULL){
-      r = r->next;
-    }
-    r->next = data;
-    h->entries++;
-    r->next->prev = r;
-  }
-}
-
-void put_CRDH(HASHTABLE h, char* hashstr, CRDH_RELATION data){
-  BUCKET b = h->buckets[hash(hashstr)];
-  if(b->contents == NULL){
-    b->contents = data;
-  } else {
-    CRDH_RELATION r = (CRDH_RELATION) b->contents;
-    while(r->next!=NULL){
-      r = r->next;
-    }
-    r->next = data;
-    h->entries++;
-    r->next->prev = r;
-  }
-}
-
 void put_INDEX(HASHTABLE h, char* hashstr, INDEX index){
   BUCKET b = h->buckets[hash(hashstr)];
   INDEX i = b->contents;
-  if(b->contents==NULL){
-    b->contents = index;
-  } else {
-    while(i!=NULL) {
-      i = i->next;
-    }
+  if(i==NULL){
     i = index;
+  } else {
+    while(i!=NULL) i = i->next;
+    i->next = index;
   }
 }
 
