@@ -5,17 +5,20 @@
 
 #include "rdm.h"
 
-//TODO: collisions
-void insert_CSG(DATABASE table, char* c, char* s, char* g){
-  CSG_RELATION relation = new_CSG(c,s,g);
+void insert_CSG(DATABASE table, CSG_RELATION relation){
+  //CSG_RELATION relation = new_CSG(c,s,g);
   char str[10];
-  strcpy(str, c);
-  strcat(str, s);
+  strcpy(str, relation->course_name);
+  strcat(str, relation->student_id);
   if(table->index->buckets[hash(str)]->contents!=NULL){
     INDEX x = (INDEX) table->index->buckets[hash(str)]->contents;
     CSG_RELATION r = x->index;
     while(r!=NULL){
-      if(CSG_equals(r, relation)) return;
+      if(CSG_equals(r, relation)){
+        printf("Duplicate Entry: ");
+        print_CSG(relation);
+        return;
+      }
       r = r->next;
     }
   }
@@ -23,16 +26,19 @@ void insert_CSG(DATABASE table, char* c, char* s, char* g){
   put_INDEX(table->index, str, new_INDEX(relation));
 }
 
-void insert_SNAP(DATABASE table, char* s, char* n, char* a, char* p){
-  SNAP_RELATION relation = new_SNAP(s,n,a,p);
+void insert_SNAP(DATABASE table, SNAP_RELATION relation){
   char str[15];
-  strcpy(str, s);
-  strcat(str, p);
+  strcpy(str, relation->student_id);
+  strcat(str, relation->student_phone);
   if(table->index->buckets[hash(str)]->contents!=NULL){
     INDEX x = (INDEX) table->index->buckets[hash(str)]->contents;
     SNAP_RELATION r = x->index;
     while(r!=NULL){
-      if(SNAP_equals(r, relation)) return;
+      if(SNAP_equals(r, relation)){
+        printf("Duplicate Entry: ");
+        print_SNAP(relation);
+        return;
+      }
       r = r->next;
     }
   }
@@ -40,16 +46,19 @@ void insert_SNAP(DATABASE table, char* s, char* n, char* a, char* p){
   put_INDEX(table->index, str, new_INDEX(relation));
 }
 
-void insert_CPQ(DATABASE table, char* c, char* pq){
-  CPQ_RELATION relation = new_CPQ(c,pq);
+void insert_CPQ(DATABASE table, CPQ_RELATION relation){
   char str[10];
-  strcpy(str, c);
-  strcat(str, pq);
+  strcpy(str, relation->course_name);
+  strcat(str, relation->prereq_name);
   if(table->index->buckets[hash(str)]->contents!=NULL){
     INDEX x = (INDEX) table->index->buckets[hash(str)]->contents;
     CPQ_RELATION r = x->index;
     while(r!=NULL){
-      if(CPQ_equals(r, relation)) return;
+      if(CPQ_equals(r, relation)){
+        printf("Duplicate Entry: ");
+        print_CPQ(relation);
+        return;
+      }
       r = r->next;
     }
   }
@@ -57,16 +66,19 @@ void insert_CPQ(DATABASE table, char* c, char* pq){
   put_INDEX(table->index, str, new_INDEX(relation));
 }
 
-void insert_CDH(DATABASE table, char* c, char* d, char* h){
-  CDH_RELATION relation = new_CDH(c,d,h);
+void insert_CDH(DATABASE table, CDH_RELATION relation){
   char str[7];
-  strcpy(str, c);
-  strcat(str, d);
+  strcpy(str, relation->course_name);
+  strcat(str, relation->course_day);
   if(table->index->buckets[hash(str)]->contents!=NULL){
     INDEX x = (INDEX) table->index->buckets[hash(str)]->contents;
     CDH_RELATION r = x->index;
     while(r!=NULL){
-      if(CDH_equals(r, relation)) return;
+      if(CDH_equals(r, relation)){
+        printf("Duplicate Entry: ");
+        print_CDH(relation);
+        return;
+      }
       r = r->next;
     }
   }
@@ -74,15 +86,18 @@ void insert_CDH(DATABASE table, char* c, char* d, char* h){
   put_INDEX(table->index, str, new_INDEX(relation));
 }
 
-void insert_CR(DATABASE table, char* c, char* r){
-  CR_RELATION relation = new_CR(c,r);
+void insert_CR(DATABASE table, CR_RELATION relation){
   char str[5];
-  strcpy(str, c);
+  strcpy(str, relation->course_name);
   if(table->index->buckets[hash(str)]->contents!=NULL){
     INDEX x = (INDEX) table->index->buckets[hash(str)]->contents;
     CR_RELATION r = x->index;
     while(r!=NULL){
-      if(CR_equals(r, relation)) return;
+      if(CR_equals(r, relation)){
+        printf("Duplicate Entry: ");
+        print_CR(relation);
+        return;
+      }
       r = r->next;
     }
   }
@@ -118,6 +133,7 @@ CSG_RELATION lookup_CSG(DATABASE table, char* c, char* s, char* g){
       r = r->next;
     }
   }
+  // if(result==NULL)printf("No results\n");
   return result;
 }
 
@@ -152,6 +168,7 @@ SNAP_RELATION lookup_SNAP(DATABASE table, char* s, char* n, char* a, char* p){
       r = r->next;
     }
   }
+  // if(result==NULL)printf("No results\n");
   return result;
 }
 
@@ -180,6 +197,7 @@ CPQ_RELATION lookup_CPQ(DATABASE table, char* c, char* pq){
       r = r->next;
     }
   }
+  // if(result==NULL)printf("No results\n");
   return result;
 }
 
@@ -211,6 +229,7 @@ CDH_RELATION lookup_CDH(DATABASE table, char* c, char* d, char* h){
       r = r->next;
     }
   }
+  // if(result==NULL)printf("No results\n");
   return result;
 }
 
@@ -239,6 +258,7 @@ CR_RELATION lookup_CR(DATABASE table, char* c, char* room){
       r = r->next;
     }
   }
+  // if(result==NULL)printf("No results\n");
   return result;
 }
 

@@ -24,7 +24,6 @@ HASHTABLE new_HASHTABLE(char s){
   h->schema = s;
   h->entries = 0;
   h->size = TABLE_SIZE;
-  //h->buckets = malloc(sizeof(struct _BUCKET)*53);
   for(int i=0; i<TABLE_SIZE; i++){
     h->buckets[i] = new_BUCKET(NULL);
   }
@@ -41,6 +40,7 @@ void put_CSG(HASHTABLE h, char* hashstr, CSG_RELATION data){
   BUCKET b = h->buckets[hash(hashstr)];
   if(b->contents == NULL){
     b->contents = data;
+    h->entries++;
   } else {
     CSG_RELATION r = (CSG_RELATION) b->contents;
     while(r->next!=NULL){
@@ -56,6 +56,7 @@ void put_SNAP(HASHTABLE h, char* hashstr, SNAP_RELATION data){
   BUCKET b = h->buckets[hash(hashstr)];
   if(b->contents == NULL){
     b->contents = data;
+    h->entries++;
   } else {
     SNAP_RELATION r = (SNAP_RELATION) b->contents;
     while(r->next!=NULL){
@@ -71,6 +72,7 @@ void put_CPQ(HASHTABLE h, char* hashstr, CPQ_RELATION data){
   BUCKET b = h->buckets[hash(hashstr)];
   if(b->contents == NULL){
     b->contents = data;
+    h->entries++;
   } else {
     CPQ_RELATION r = (CPQ_RELATION) b->contents;
     while(r->next!=NULL){
@@ -86,6 +88,7 @@ void put_CDH(HASHTABLE h, char* hashstr, CDH_RELATION data){
   BUCKET b = h->buckets[hash(hashstr)];
   if(b->contents == NULL){
     b->contents = data;
+    h->entries++;
   } else {
     CDH_RELATION r = (CDH_RELATION) b->contents;
     while(r->next!=NULL){
@@ -101,6 +104,7 @@ void put_CR(HASHTABLE h, char* hashstr, CR_RELATION data){
   BUCKET b = h->buckets[hash(hashstr)];
   if(b->contents == NULL){
     b->contents = data;
+    h->entries++;
   } else {
     CR_RELATION r = (CR_RELATION) b->contents;
     while(r->next!=NULL){
@@ -116,6 +120,7 @@ void put_ID(HASHTABLE h, char* hashstr, ID_RELATION data){
   BUCKET b = h->buckets[hash(hashstr)];
   if(b->contents == NULL){
     b->contents = data;
+    h->entries++;
   } else {
     ID_RELATION r = (ID_RELATION) b->contents;
     while(r->next!=NULL){
@@ -131,6 +136,7 @@ void put_CRDH(HASHTABLE h, char* hashstr, CRDH_RELATION data){
   BUCKET b = h->buckets[hash(hashstr)];
   if(b->contents == NULL){
     b->contents = data;
+    h->entries++;
   } else {
     CRDH_RELATION r = (CRDH_RELATION) b->contents;
     while(r->next!=NULL){
@@ -147,11 +153,13 @@ void put_INDEX(HASHTABLE h, char* hashstr, INDEX index){
   INDEX i = b->contents;
   if(b->contents==NULL){
     b->contents = index;
+    h->entries++;
   } else {
     while(i!=NULL) {
       i = i->next;
     }
     i = index;
+    h->entries++;
   }
 }
 

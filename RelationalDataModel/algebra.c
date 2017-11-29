@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "algebra.h"
+#include "rdm.h"
 #include "relations.h"
 
 HASHTABLE unon(HASHTABLE h1, HASHTABLE h2){
@@ -329,6 +330,28 @@ HASHTABLE slct_c_csg(HASHTABLE h, char* c){
   return selection;
 }
 
+HASHTABLE slct_s_csg(HASHTABLE h, char* s){
+  HASHTABLE selection = new_HASHTABLE(schema_CSGx);
+  for(int i=0; i<h->size; i++){
+    CSG_RELATION r = NULL;
+    if(h->schema <= 0){
+      INDEX x = (INDEX)h->buckets[i]->contents;
+      if(x!=NULL){
+        r = x->index;
+      }
+    } else {
+      r = (CSG_RELATION)h->buckets[i]->contents;
+    }
+    while(r!=NULL){
+      if(strcmp(r->student_id, s)==0){
+        put_INDEX(selection, r->key, new_INDEX(r));
+      }
+      r = r->next;
+    }
+  }
+  return selection;
+}
+
 HASHTABLE slct_r_crdh(HASHTABLE h, char* room){
   HASHTABLE selection = new_HASHTABLE(schema_CRDHx);
   for(int i=0; i<h->size; i++){
@@ -351,10 +374,10 @@ HASHTABLE slct_r_crdh(HASHTABLE h, char* room){
   return selection;
 }
 
-HASHTABLE proj_s_course_csg(HASHTABLE h){
+HASHTABLE proj_s_csg(HASHTABLE h){
   HASHTABLE projection = new_HASHTABLE(schema_IDx);
   for(int i=0; i<h->size; i++){
-    CSG_RELATION r;
+    CSG_RELATION r=NULL;
     if(h->schema <= 0){
       INDEX x = (INDEX)h->buckets[i]->contents;
       if(x!=NULL){
@@ -369,10 +392,10 @@ HASHTABLE proj_s_course_csg(HASHTABLE h){
   return projection;
 }
 
-HASHTABLE proj_dh_room_crdh(HASHTABLE h){
+HASHTABLE proj_dh_crdh(HASHTABLE h){
   HASHTABLE projection = new_HASHTABLE(schema_DHx);
   for(int i=0; i<h->size; i++){
-    CRDH_RELATION r;
+    CRDH_RELATION r=NULL;
     if(h->schema <= 0){
       INDEX x = (INDEX)h->buckets[i]->contents;
       if(x!=NULL){
@@ -380,14 +403,12 @@ HASHTABLE proj_dh_room_crdh(HASHTABLE h){
       }
     } else r = h->buckets[i]->contents;
     while(r!=NULL){
-      //DH_RELATION dh = new_DH(r->course_day, r->course_hour);
       put_INDEX(projection, r->key, new_INDEX(new_DH(r->course_day, r->course_hour)));
       r = r->next;
     }
   }
   return projection;
 }
-
 
 HASHTABLE join_cr_cdh_course(HASHTABLE cr_table, HASHTABLE cdh_table){
   HASHTABLE join = new_HASHTABLE(schema_CRDHx);
@@ -419,5 +440,27 @@ HASHTABLE join_cr_cdh_course(HASHTABLE cr_table, HASHTABLE cdh_table){
   return join;
 }
 
-char* grade(char* n, char* c){}
-char* whereis(char* n, char* h, char* d){}
+char* grade(char* n, char* c, DATABASE csg_data, DATABASE snap_data){
+  SNAP_RELATION snap = lookup_SNAP(snap_data, "*", n, "*", "*");
+  CSG_RELATION csg = lookup_CSG(csg_data, c, snap->student_id, "*");
+  return csg->student_grade;
+}
+
+char* whereis(char* n, char* h, char* d,
+DATABASE snap, DATABASE csg, DATABASE cdh, DATABASE cr){
+  SNAP_RELATION snap_r = lookup_SNAP(snap,"*",n,"*","*");
+  HASHTABLE courses = slct_s_csg(csg->storage, snap_r->student_id);
+  for (int i=0; i<courses->size; i++) {
+    CSG_RELATION csg_r = courses->buckets[i]->contents;
+    while(csg_r!=NULL){
+      CDH_RELATION cdh_r = lookup_CDH(cdh, csg_r->course_name, d, h);
+      while(cdh_r!=NULL){
+        CR_RELATION cr_r = lookup_CR(cr, cdh_r->course_name, "*");
+        if(cr_r!=NULL)return cr_r->course_room;
+        cdh_r = cdh_r->next;
+      }
+      csg_r = csg_r->next;
+    }
+  }
+  return "No results";
+}

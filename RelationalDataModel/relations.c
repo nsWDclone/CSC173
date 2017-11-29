@@ -9,7 +9,7 @@ CSG_RELATION new_CSG(char* c, char* s, char* g){
   new_csg->course_name = c;
   new_csg->student_id = s;
   new_csg->student_grade = g;
-  new_csg->key = malloc(sizeof(char*));
+  new_csg->key = malloc(sizeof(char)*11);
   char str[10];
   strcpy(str, c);
   strcat(str, s);
@@ -20,13 +20,6 @@ CSG_RELATION new_CSG(char* c, char* s, char* g){
 }
 void print_CSG(CSG_RELATION csg){
   if(csg==NULL)return;
-  // int i=0;
-  // while(csg!=NULL){
-  //   printf("[%d] %s %s %s ", i, csg->course_name, csg->student_id, csg->student_grade);
-  //   csg = csg->next;
-  //   i++;
-  // }
-  // printf("\n" );
   while(csg!=NULL){
     printf("%s %s %s\n", csg->course_name, csg->student_id, csg->student_grade);
     csg = csg->next;
@@ -39,7 +32,7 @@ SNAP_RELATION new_SNAP(char* s, char* n, char* a, char* p){
   new_snap->student_name = n;
   new_snap->student_address = a;
   new_snap->student_phone = p;
-  new_snap->key = malloc(sizeof(char*));
+  new_snap->key = malloc(sizeof(char)*16);
   char str[15];
   strcpy(str, s);
   strcat(str, p);
@@ -63,7 +56,7 @@ CPQ_RELATION new_CPQ(char* c, char* pq){
   CPQ_RELATION new_cpq = (CPQ_RELATION)malloc(sizeof(struct _CPQ));
   new_cpq->course_name = c;
   new_cpq->prereq_name = pq;
-  new_cpq->key = malloc(sizeof(char*));
+  new_cpq->key = malloc(sizeof(char)*11);
   char str[10];
   strcpy(str, c);
   strcat(str, pq);
@@ -85,7 +78,7 @@ CDH_RELATION new_CDH(char* c, char* d, char* h){
   new_cdh->course_name = c;
   new_cdh->course_day = d;
   new_cdh->course_hour = h;
-  new_cdh->key = malloc(sizeof(char*));
+  new_cdh->key = malloc(sizeof(char)*8);
   char str[7];
   strcpy(str, c);
   strcat(str, d);
@@ -106,7 +99,8 @@ CR_RELATION new_CR(char* c, char* r){
   CR_RELATION new_cr = (CR_RELATION)malloc(sizeof(struct _CR));
   new_cr->course_name = c;
   new_cr->course_room =r;
-  new_cr->key = c;
+  new_cr->key = malloc(sizeof(char)*6);
+  strcpy(new_cr->key, c);
   new_cr->next = NULL;
   new_cr->prev = NULL;
   return new_cr;
