@@ -32,10 +32,16 @@ void print_DATABASE(DATABASE d){
 
 int main(int argc, char const *argv[]) {
   const char* flag = "";
+  const char* flag2 = "";
+
   if(argv[1] != NULL) flag = argv[1];
+  if(argv[2] != NULL) flag2 = argv[2];
+  else flag2 = flag;
 
   if((strcmp(flag, "-io")==0)
-  || (strcmp(flag, "-i")==0)){
+  || (strcmp(flag, "-i")==0)
+  || (strcmp(flag2, "-i0")==0)
+  || (strcmp(flag2, "-i")==0)){
     printf("Reading data from files...\n");
     csg  = read_CSG();
     snap = read_SNAP();
@@ -93,11 +99,10 @@ int main(int argc, char const *argv[]) {
   printf("CR:\n");
   print_DATABASE(cr);
 
-  const char* flag2 = "";
-  if(argv[2] != NULL) flag2 = argv[2];
-  if(strcmp(flag2, "-test")==0){
-    printf("BASIC OPERATIONS:\n----------------------------------\n");
+  if((strcmp(flag2, "-q")==0)
+  || (strcmp(flag2, "-qa")==0)){
     //8.2
+    printf("BASIC OPERATIONS:\n----------------------------------\n");
     printf("8.2 - lookup(CS101, 12345, *, CSG)\n");
     print_CSG(lookup_CSG(csg, "CS101","12345","*"));
     printf("\n8.2 - lookup(CS205, CS120, CPQ)\n");
@@ -110,14 +115,29 @@ int main(int argc, char const *argv[]) {
     insert_CPQ(cpq, new_CPQ("CS205", "CS101"));
     printf("\n");
 
-  printf("COMPLEX QUERY:\n----------------------------------\n");
+    printf("QUERIES:\n----------------------------------\n");
     printf("C. Brown's grade in CS101: %s\n", grade("C. Brown", "CS101", csg, snap));
     printf("At 9AM on Fridays, C. Brown is in: %s\n\n",
       whereis("C. Brown", "9AM", "F", snap, csg, cdh , cr));
+    printf("\n");
 
+    printf("NEW RELATIONS:\n----------------------------------\n");
+    printf("CSG:\n");
+    print_DATABASE(csg);
+    printf("SNAP:\n");
+    print_DATABASE(snap);
+    printf("CPQ:\n");
+    print_DATABASE(cpq);
+    printf("CDH:\n");
+    print_DATABASE(cdh);
+    printf("CR:\n");
+    print_DATABASE(cr);
+  }
 
-    printf("RELATIONAL ALGEBRA:\n----------------------------------\n");
+  if((strcmp(flag2, "-a")==0)
+  || (strcmp(flag2, "-qa")==0)){
     //8.12
+    printf("RELATIONAL ALGEBRA:\n----------------------------------\n");
     printf("8.12 - select(course=CS101, CSG)\n");
     HASHTABLE u = slct_c_csg(csg->storage, "CS101");
     for(int i=0; i<u->size; i++){
@@ -159,22 +179,12 @@ int main(int argc, char const *argv[]) {
         if(x!=NULL) print_relation(z->schema, x->index);
       }
     }
-    printf("\n");
-    printf("RELATIONS:\n----------------------------------\n");
-    printf("CSG:\n");
-    print_DATABASE(csg);
-    printf("SNAP:\n");
-    print_DATABASE(snap);
-    printf("CPQ:\n");
-    print_DATABASE(cpq);
-    printf("CDH:\n");
-    print_DATABASE(cdh);
-    printf("CR:\n");
-    print_DATABASE(cr);
   }
 
   if((strcmp(flag, "-io")==0)
-  || (strcmp(flag, "-o")==0)){
+  || (strcmp(flag2, "-o")==0)
+  || (strcmp(flag2, "-io")==0)
+  || (strcmp(flag2, "-o")==0)){
     printf("Writing data to files...\n");
     write_CSG(csg);
     write_SNAP(snap);

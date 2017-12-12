@@ -17,6 +17,7 @@ int hash(char* str){
 BUCKET new_BUCKET(void* contents){
   BUCKET b = (BUCKET)malloc(sizeof(BUCKET));
   b->contents = contents;
+  return b;
 }
 
 HASHTABLE new_HASHTABLE(char s){
@@ -27,6 +28,7 @@ HASHTABLE new_HASHTABLE(char s){
   for(int i=0; i<TABLE_SIZE; i++){
     h->buckets[i] = new_BUCKET(NULL);
   }
+  return h;
 }
 
 INDEX new_INDEX(void* i){

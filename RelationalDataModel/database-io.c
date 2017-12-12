@@ -97,7 +97,6 @@ DATABASE read_CR(){
 
 void write_CSG(DATABASE database){
   FILE* file_ptr = fopen("./data/csg.data", "w");
-  char buff[128];
   int entries = database->storage->entries;
   fprintf(file_ptr, "%d\n", entries);
   for(int i=0; i<database->storage->size; i++){
@@ -114,7 +113,6 @@ void write_CSG(DATABASE database){
 
 void write_SNAP(DATABASE database){
   FILE* file_ptr = fopen("./data/snap.data", "w");
-  char buff[128];
   int entries = database->storage->entries;
   fprintf(file_ptr, "%d\n", entries);
   for(int i=0; i<database->storage->size; i++){
@@ -131,7 +129,6 @@ void write_SNAP(DATABASE database){
 
 void write_CPQ(DATABASE database){
   FILE* file_ptr = fopen("./data/cpq.data", "w");
-  char buff[128];
   int entries = database->storage->entries;
   fprintf(file_ptr, "%d\n", entries);
   for(int i=0; i<database->storage->size; i++){
@@ -148,7 +145,6 @@ void write_CPQ(DATABASE database){
 
 void write_CDH(DATABASE database){
   FILE* file_ptr = fopen("./data/cdh.data", "w");
-  char buff[128];
   int entries = database->storage->entries;
   fprintf(file_ptr, "%d\n", entries);
   for(int i=0; i<database->storage->size; i++){
@@ -165,7 +161,6 @@ void write_CDH(DATABASE database){
 
 void write_CR(DATABASE database){
   FILE* file_ptr = fopen("./data/cr.data", "w");
-  char buff[128];
   int entries = database->storage->entries;
   fprintf(file_ptr, "%d\n", entries);
   for(int i=0; i<database->storage->size; i++){
